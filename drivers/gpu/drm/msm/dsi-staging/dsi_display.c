@@ -1178,7 +1178,7 @@ static ssize_t debugfs_misr_setup(struct file *file,
 		return -ENODEV;
 
 	if (*ppos)
-		return 0;
+		return -EINVAL;
 
 	buf = kzalloc(MISR_BUFF_SIZE, GFP_KERNEL);
 	if (!buf)
@@ -1307,7 +1307,7 @@ static ssize_t debugfs_esd_trigger_check(struct file *file,
 		return -ENODEV;
 
 	if (*ppos)
-		return 0;
+		return -EINVAL;
 
 	if (user_len > sizeof(u32))
 		return -EINVAL;
@@ -1446,7 +1446,7 @@ static ssize_t debugfs_read_esd_check_mode(struct file *file,
 		return -ENODEV;
 
 	if (*ppos)
-		return 0;
+		return -EINVAL;
 
 	if (!display->panel) {
 		pr_err("invalid panel data\n");
@@ -1465,7 +1465,8 @@ static ssize_t debugfs_read_esd_check_mode(struct file *file,
 	}
 
 	if (!esd_config->esd_enabled) {
-		rc = snprintf(buf, len, "ESD feature not enabled");
+		pr_warn("esd check didn't enable\n");
+		rc = -EINVAL;
 		goto output_mode;
 	}
 
