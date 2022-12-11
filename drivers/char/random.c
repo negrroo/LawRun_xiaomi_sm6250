@@ -289,7 +289,6 @@ static void crng_fast_key_erasure(u8 key[CHACHA20_KEY_SIZE],
 
 	BUG_ON(random_data_len > 32);
 
-	chacha_init_consts(chacha_state);
 	memcpy(&chacha_state[4], key, CHACHA20_KEY_SIZE);
 	memset(&chacha_state[12], 0, sizeof(u32) * 4);
 	chacha20_block(chacha_state, first_block);
